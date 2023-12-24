@@ -5,42 +5,41 @@ import (
     "log"
     "net/http"
     "github.com/PuerkitoBio/goquery"
-	"regexp"
-	"strings"
-	"database/sql"
-	_ "github.com/go-sql-driver/mysql"
-	"github.com/joho/godotenv"
-	"os"
+    "regexp"
+    "strings"
+    "database/sql"
+    _ "github.com/go-sql-driver/mysql"
+    "github.com/joho/godotenv"
+    "os"
 )
 
+const siteID = 2542416 // 如果 site_id 是常量，可以定义为常量
+
 func main() {
+    // 加载 .env 文件中的配置信息
+    if err := godotenv.Load(); err != nil {
+        log.Fatal("Error loading .env file")
+    }
 
-	// 加载 .env 文件中的配置信息
-	if err := godotenv.Load(); err != nil {
-		log.Fatal("Error loading .env file")
-	}
+    // 获取从 .env 文件加载的配置信息
+    username := os.Getenv("DB_USERNAME")
+    password := os.Getenv("DB_PASSWORD")
+    dbname := os.Getenv("DB_NAME") // 添加数据库名称配置
 
-	// 获取从 .env 文件加载的配置信息
-	username := os.Getenv("DB_USERNAME")
-	password := os.Getenv("DB_PASSWORD")
+    // MySQL 数据库连接信息
+    dsn := fmt.Sprintf("%s:%s@tcp(localhost:3306)/%s", username, password, dbname)
 
-	// MySQL 数据库连接信息
-	dsn := fmt.Sprintf("%s:%s@tcp(localhost:3306)/dbname", username, password)
+    // 连接到 MySQL 数据库
+    db, err := sql.Open("mysql", dsn)
+    if err != nil {
+        log.Fatal(err)
+    }
+    defer db.Close()
 
-	// 连接到MySQL数据库
-	db, err := sql.Open("mysql", dsn)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
-
-	///////////////////////
-
-	site_id := 2542416
-    url := "https://www.85novel.com/book/2542416.html"
+    siteURL := "https://www.85novel.com/book/2542416.html"
 
     // 发送HTTP GET请求
-    res, err := http.Get(url)
+    res, err := http.Get(siteURL)
     if err != nil {
         log.Fatal(err)
     }
@@ -58,34 +57,30 @@ func main() {
         href, _ := item.Attr("href")
         // 获取链接的title文本
         title := item.Text()
-        // 输出链接的href和title
-       // fmt.Printf("链接: %s\n标题: %s\n", href, title)
-		
-		// 使用正则表达式提取数字
-		re := regexp.MustCompile(`(\d+)`)
-		matches := re.FindAllString(href, -1)
-		story_id := 0
-		if len(matches) > 0 {
-			// 提取的数字
-			story_id = matches[len(matches)-1]
-			fmt.Printf("数字: %s\n", story_id)
-		}
 
-		// 使用空格分割标题
-		titleParts := strings.Fields(title)
-		if len(titleParts) > 0 {
-			// 分割的标题部分
-			fmt.Printf("章節: %v\n", titleParts[0])
-			fmt.Printf("標題: %v\n", titleParts[1])
+        // 使用正则表达式提取数字
+        re := regexp.MustCompile(`(\d+)`)
+        matches := re.FindAllString(href, -1)
+        storyID := 0
+        if len(matches) > 0 {
+            // 提取的数字
+            storyIDStr := matches[len(matches)-1]
+            storyID, _ = strconv.Atoi(storyIDStr)
+        }
 
-			// 将数字和标题写入 MySQL 数据库
-			insertSQL := "INSERT INTO story (site_id, story_id, story_name, story_url) VALUES (?, ?, ?, ?)"
-			_, err := db.Exec(insertSQL, site_id, story_id, titleParts[0], titleParts[1])
-			if err != nil {
-				log.Fatal(err)
-			}
-			fmt.Println("数据已成功写入 MySQL 数据库")
-		}
+        // 使用空格分割标题
+        titleParts := strings.Fields(title)
+        if len(titleParts) > 1 {
+            chapterName := titleParts[0]
+            storyName := titleParts[1]
 
+            // 将数字和标题写入 MySQL 数据库
+            insertSQL := "INSERT INTO story (site_id, story_id, chapter_name, story_name) VALUES (?, ?, ?, ?)"
+            _, err := db.Exec(insertSQL, siteID, storyID, chapterName, storyName)
+            if err != nil {
+                log.Fatal(err)
+            }
+            fmt.Printf("数据已成功写入 MySQL 数据库 - 章节: %s, 标题: %s\n", chapterName, storyName)
+        }
     })
 }
