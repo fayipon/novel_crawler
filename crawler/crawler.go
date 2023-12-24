@@ -7,9 +7,36 @@ import (
     "github.com/PuerkitoBio/goquery"
 	"regexp"
 	"strings"
+	"database/sql"
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/joho/godotenv"
+	"os"
 )
 
 func main() {
+
+	// 加载 .env 文件中的配置信息
+	if err := godotenv.Load(); err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	// 获取从 .env 文件加载的配置信息
+	username := os.Getenv("DB_USERNAME")
+	password := os.Getenv("DB_PASSWORD")
+
+	// MySQL 数据库连接信息
+	dsn := fmt.Sprintf("%s:%s@tcp(localhost:3306)/dbname", username, password)
+
+	// 连接到MySQL数据库
+	db, err := sql.Open("mysql", dsn)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
+	///////////////////////
+
+	site_id := 2542416
     url := "https://www.85novel.com/book/2542416.html"
 
     // 发送HTTP GET请求
@@ -39,8 +66,8 @@ func main() {
 		matches := re.FindAllString(href, -1)
 		if len(matches) > 0 {
 			// 提取的数字
-			number := matches[len(matches)-1]
-			fmt.Printf("数字: %s\n", number)
+			story_id := matches[len(matches)-1]
+			fmt.Printf("数字: %s\n", story_id)
 		}
 
 		// 使用空格分割标题
@@ -49,6 +76,14 @@ func main() {
 			// 分割的标题部分
 			fmt.Printf("章節: %v\n", titleParts[0])
 			fmt.Printf("標題: %v\n", titleParts[1])
+
+			// 将数字和标题写入 MySQL 数据库
+			insertSQL := "INSERT INTO story (site_id, story_id, story_name, story_url) VALUES (?, ?, ?, ?)"
+			_, err := db.Exec(insertSQL, number, strings.Join(site_id, story_id, titleParts[0], titleParts[1]))
+			if err != nil {
+				log.Fatal(err)
+			}
+			fmt.Println("数据已成功写入 MySQL 数据库")
 		}
 
     })
