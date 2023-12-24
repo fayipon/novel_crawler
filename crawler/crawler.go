@@ -31,5 +31,22 @@ func main() {
         title := item.Text()
         // 输出链接的href和title
         fmt.Printf("链接: %s\n标题: %s\n", href, title)
+		
+		// 使用正则表达式提取数字
+		re := regexp.MustCompile(`(\d+)`)
+		matches := re.FindAllString(link, -1)
+		if len(matches) > 0 {
+			// 提取的数字
+			number := matches[len(matches)-1]
+			fmt.Printf("数字: %s\n", number)
+		}
+
+		// 使用空格分割标题
+		titleParts := strings.Fields(title)
+		if len(titleParts) > 0 {
+			// 分割的标题部分
+			fmt.Printf("分割的标题: %v\n", titleParts)
+		}
+
     })
 }
