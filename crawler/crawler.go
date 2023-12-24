@@ -79,7 +79,7 @@ func main() {
 
 			// 将数字和标题写入 MySQL 数据库
 			insertSQL := "INSERT INTO story (site_id, story_id, story_name, story_url) VALUES (?, ?, ?, ?)"
-			_, err := db.Exec(insertSQL, number, strings.Join(site_id, story_id, titleParts[0], titleParts[1]))
+			_, err := db.Exec(insertSQL, site_id, story_id, titleParts[0], titleParts[1])
 			if err != nil {
 				log.Fatal(err)
 			}
