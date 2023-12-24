@@ -5,6 +5,8 @@ import (
     "log"
     "net/http"
     "github.com/PuerkitoBio/goquery"
+	"regexp"
+	"strings"
 )
 
 func main() {
@@ -34,7 +36,7 @@ func main() {
 		
 		// 使用正则表达式提取数字
 		re := regexp.MustCompile(`(\d+)`)
-		matches := re.FindAllString(link, -1)
+		matches := re.FindAllString(href, -1)
 		if len(matches) > 0 {
 			// 提取的数字
 			number := matches[len(matches)-1]
