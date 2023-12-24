@@ -37,6 +37,11 @@ func main() {
     }
     defer db.Close()
 
+	_, err = db.Exec("USE novel")
+	if err != nil {
+		log.Fatal(err)
+	}
+
     siteURL := "https://www.85novel.com/book/2542416.html"
 
     // 发送HTTP GET请求
