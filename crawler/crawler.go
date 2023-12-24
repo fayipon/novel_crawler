@@ -48,7 +48,7 @@ func main() {
 		if len(titleParts) > 0 {
 			// 分割的标题部分
 			fmt.Printf("章節: %v\n", titleParts[0])
-			fmt.Printf("標題: %v\n", titleParts[0])
+			fmt.Printf("標題: %v\n", titleParts[1])
 		}
 
     })
