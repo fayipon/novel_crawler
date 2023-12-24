@@ -64,9 +64,10 @@ func main() {
 		// 使用正则表达式提取数字
 		re := regexp.MustCompile(`(\d+)`)
 		matches := re.FindAllString(href, -1)
+		story_id := 0
 		if len(matches) > 0 {
 			// 提取的数字
-			story_id := matches[len(matches)-1]
+			story_id = matches[len(matches)-1]
 			fmt.Printf("数字: %s\n", story_id)
 		}
 
