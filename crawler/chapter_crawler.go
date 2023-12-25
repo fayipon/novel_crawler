@@ -84,6 +84,12 @@ func main() {
         
         fmt.Println("ID: %d, story_name: %s, chapter_name: %s \n Data inserted successfully!\n", id, story_name, chapter_name)
 
+        // 执行 SQL 更新操作
+        _, err = db.Exec("UPDATE story SET status = '2' WHERE site_id = ? AND story_id = ?", site_id, story_id,)
+        if err != nil {
+            log.Fatal(err)
+        }
+
     }
 
     // 检查是否有错误发生
