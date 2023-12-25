@@ -23,7 +23,7 @@ func main() {
     }
 
     // 循环从1到100
-    for i := 1; i <= 100; i++ {
+    for i := 101; i <= 1000; i++ {
         // 构建完整URL
         url := baseURL + strconv.Itoa(i) + ".html"
 
