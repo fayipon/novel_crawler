@@ -8,8 +8,6 @@ import (
 	"net/http"
 	"strconv"
 	"github.com/PuerkitoBio/goquery"
-	"golang.org/x/text/encoding/traditionalchinese"
-	"golang.org/x/text/transform"
 )
 
 func main() {
