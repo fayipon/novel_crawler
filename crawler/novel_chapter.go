@@ -19,6 +19,9 @@ func main() {
 	}
 	defer response.Body.Close()
 
+	
+	fmt.Printf(" %s\n", response)
+
 	// 使用 goquery 解析 HTML
 	doc, err := goquery.NewDocumentFromReader(response.Body)
 	if err != nil {
