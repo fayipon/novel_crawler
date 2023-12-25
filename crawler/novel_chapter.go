@@ -22,8 +22,8 @@ func main() {
         log.Fatal(err)
     }
 
-    // 循环从1到5
-    for i := 1; i <= 5; i++ {
+    // 循环从1到100
+    for i := 1; i <= 100; i++ {
         // 构建完整URL
         url := baseURL + strconv.Itoa(i) + ".html"
 
