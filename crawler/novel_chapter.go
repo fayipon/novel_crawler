@@ -8,7 +8,6 @@ import (
     "net/http"
     "strconv"
     "strings"
-    "io/ioutil"
 )
 
 func main() {
