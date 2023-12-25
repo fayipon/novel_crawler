@@ -111,55 +111,6 @@ func processStory(db *sql.DB, story Story) {
         mergedText += text + "\n"
     })
 
-    specificPrefix := " 85小說網"
-
-
-    // 检查 mergedText 是否以特定前缀开始
-    if strings.HasPrefix(mergedText, specificPrefix) {
-        // 在 mergedText 以特定前缀开始时执行其他处理逻辑
-        fmt.Println("Merged text starts with the specific prefix. Performing additional analysis...")
-
-        // 从 GoQuery 文档中获取包含 JavaScript 代码的 script 标签
-        doc.Find("script").Each(func(index int, scriptElement *goquery.Selection) {
-            // 获取 script 标签内的文本内容
-            scriptText := scriptElement.Text()
-
-            // 使用正则表达式模式，匹配包含 contentInfo 的 JavaScript 代码
-            pattern := `contentInfo:\s+(\[[^\]]+\])`
-
-            // 使用正则表达式查找匹配
-            re := regexp.MustCompile(pattern)
-            match := re.FindStringSubmatch(scriptText)
-
-            if len(match) == 2 {
-                // 去掉 JSON 字符串中的空格和换行符
-                contentInfoJSON = match[1]
-                contentInfoJSON = strings.ReplaceAll(contentInfoJSON, " ", "")
-                contentInfoJSON = strings.ReplaceAll(contentInfoJSON, "\n", "")
-
-                // 解析 JSON 数组
-                var jsonArray []string
-                jsonArray = append(jsonArray, contentInfoJSON)
-
-                // 倒序排序 JSON 数组
-             //   sort.Sort(sort.Reverse(sort.StringSlice(jsonArray)))
-
-                // 将排序后的 JSON 数组合并为字符串并按行打印
-                sortedJSON := strings.Join(jsonArray, ",")
-
-                // 打印每行
-                lines := strings.Split(sortedJSON, `","`)
-                for _, line := range lines {
-                    // 去掉 JSON 数组中的引号和方括号
-                    line = strings.Trim(line, `[]"`)
-                    // 打印每行
-                    fmt.Println(line)
-                }
-            }
-        })
-
-    } else {
-
         // 插入数据到数据库表
         currentTime := time.Now().Format("2006-01-02 15:04:05")
         _, err = db.Exec("INSERT INTO chapter (site_id, story_id, data, create_time) VALUES (?, ?, ?, ?)", story.SiteID, story.StoryID, mergedText, currentTime)
@@ -174,6 +125,6 @@ func processStory(db *sql.DB, story Story) {
         if err != nil {
             log.Fatal(err)
         }
-    }
+    
 
 }
