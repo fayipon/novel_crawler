@@ -70,10 +70,12 @@ func main() {
         var mergedText string
 
         // 查找所有的 <p></p> 标签并提取文本
-        doc.Find("p").Not("p:last-child").Each(func(index int, element *goquery.Selection) {
+        doc.Find("p").Each(func(index int, element *goquery.Selection) {
             text := element.Text()
             mergedText += text + "\n" 
         })
+
+        fmt.Printf("%s\n", mergedText)
 
         // 插入数据到数据库表
         currentTime := time.Now().Format("2006-01-02 15:04:05")
