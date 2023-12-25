@@ -29,12 +29,10 @@ func main() {
         log.Fatal(err)
     }
 
-    // 使用goquery选择器来解析页面元素
-    // 这里以获取标题为例
-    title := doc.Find("h1").Text()
-
-    // 输出标题
-    fmt.Println("标题:", title)
-    // 输出标题
-    fmt.Println("doc:", doc)
+    // 选择所有带有<p style="color: black;">的元素
+    doc.Find("p[style='color: black;']").Each(func(index int, element *goquery.Selection) {
+        // 提取文本内容并打印
+        text := element.Text()
+        fmt.Println("文本内容:", text)
+    })
 }
