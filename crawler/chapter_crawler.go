@@ -10,7 +10,6 @@ import (
     "time"
     "strings"
     "regexp"
-    "sort"
     "github.com/PuerkitoBio/goquery"
 )
 
@@ -143,7 +142,7 @@ func processStory(db *sql.DB, story Story) {
                 jsonArray = append(jsonArray, contentInfoJSON)
 
                 // 倒序排序 JSON 数组
-                sort.Sort(sort.Reverse(sort.StringSlice(jsonArray)))
+             //   sort.Sort(sort.Reverse(sort.StringSlice(jsonArray)))
 
                 // 将排序后的 JSON 数组合并为字符串并按行打印
                 sortedJSON := strings.Join(jsonArray, ",")
