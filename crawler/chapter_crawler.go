@@ -1,14 +1,15 @@
 package main
+
 import (
     "database/sql"
     "fmt"
+    "log" // Import the "log" package
     _ "github.com/go-sql-driver/mysql"
     "github.com/joho/godotenv"
     "os"
 )
 
 func main() {
-
     // 加载 .env 文件中的配置信息
     if err := godotenv.Load(); err != nil {
         log.Fatal("Error loading .env file")
@@ -21,7 +22,9 @@ func main() {
 
     // MySQL 数据库连接信息
     dsn := fmt.Sprintf("%s:%s@tcp(localhost:3306)/%s", username, password, dbname)
-    
+
+    // 建立数据库连接
+    db, err := sql.Open("mysql", dsn)
     if err != nil {
         panic(err.Error())
     }
@@ -40,10 +43,10 @@ func main() {
         var site_id int
         var story_id int
         var story_name string
-        var chapter_name string
+        var chapter_name string // Change "title" to "chapter_name"
         // 添加其他需要的字段
 
-        err := rows.Scan(&id, &title)
+        err := rows.Scan(&id, &site_id, &story_id, &story_name, &chapter_name) // Fix variable names
         if err != nil {
             panic(err.Error())
         }
