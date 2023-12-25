@@ -9,7 +9,7 @@ import (
 
 func main() {
     // 要抓取的网站URL
-    url := "https://sto520.com/book/27711/"
+    url := "https://www.bg3.co/novel/pagea/chaoshenjixieshi-qipeijia_1.html"
 
     // 发起HTTP GET请求
     res, err := http.Get(url)
