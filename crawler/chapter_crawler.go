@@ -123,7 +123,7 @@ func processStory(db *sql.DB, story Story) {
             scriptText := scriptElement.Text()
 
             // 正则表达式模式，用于匹配包含 contentInfo 的 JavaScript 代码
-            pattern := `var\s+contentInfo\s+=\s+(\[[^\]]+\]);`
+            pattern := `contentInfo:\s+(\[[^\]]+\]);`
 
             // 使用正则表达式查找匹配
             re := regexp.MustCompile(pattern)
