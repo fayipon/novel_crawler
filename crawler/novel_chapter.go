@@ -17,9 +17,11 @@ func main() {
         log.Fatal(err)
     }
 
-    // 添加与Postman请求相同的头部和Cookie
-    req.Header.Set("User-Agent", "Your User Agent") // 替换成Postman中的User-Agent
-    req.Header.Set("Cookie", "Your-Cookie-Header-Value") // 替换成Postman中的Cookie值
+    // 添加HTTP头部信息
+    req.Header.Set("Connection", "keep-alive")
+    req.Header.Set("Accept-Encoding", "gzip, deflate, br")
+    req.Header.Set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8")
+    req.Header.Set("Host", "sto520.com")
 
     // 发起HTTP请求
     client := &http.Client{}
