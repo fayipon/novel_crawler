@@ -117,13 +117,14 @@ func processStory(db *sql.DB, story Story) {
         // 在 mergedText 以特定前缀开始时执行其他处理逻辑
         fmt.Println("Merged text starts with the specific prefix. Performing additional analysis...")
 
-        // 从 GoQuery 文档中获取所有的 script 标签
+
+        // 从 GoQuery 文档中获取包含 JavaScript 代码的 script 标签
         doc.Find("script").Each(func(index int, scriptElement *goquery.Selection) {
             // 获取 script 标签内的文本内容
             scriptText := scriptElement.Text()
 
-            // 正则表达式模式，用于匹配包含 contentInfo 的 JavaScript 代码
-            pattern := `contentInfo:\s+(\[[^\]]+\]);`
+            // 使用正则表达式模式，匹配包含 contentInfo 的 JavaScript 代码
+            pattern := `contentInfo:\s+(\[[^\]]+\])`
 
             // 使用正则表达式查找匹配
             re := regexp.MustCompile(pattern)
@@ -135,7 +136,7 @@ func processStory(db *sql.DB, story Story) {
                 // 打印 contentInfo 的 JSON 值
                 fmt.Println("contentInfo JSON:", contentInfoJSON)
 
-                // 可以在这里对 contentInfoJSON 进行进一步处理
+                // 如果需要对 contentInfoJSON 进行进一步处理，可以在这里添加代码
             }
         })
 
