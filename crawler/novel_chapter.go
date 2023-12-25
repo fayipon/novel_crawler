@@ -23,7 +23,7 @@ func main() {
     }
 
     // 循环从1到5
-    for i := 6; i <= 30; i++ {
+    for i := 1; i <= 5; i++ {
         // 构建完整URL
         url := baseURL + strconv.Itoa(i) + ".html"
 
@@ -50,10 +50,10 @@ func main() {
 
         // 示例：获取页面标题并打印
         title := doc.Find("title").Text()
-        fmt.Printf("标题 %d: %s\n", i, title)
+        fmt.Printf("标题 %04d: %s\n", i, title) // 使用%04d来格式化数字为4位数，前面补0
 
         // 创建txt文件并打开以供写入
-        filePath := fmt.Sprintf("%s/ep%d.txt", dirPath, i) // 更改文件名为"ep"
+        filePath := fmt.Sprintf("%s/ep%04d.txt", dirPath, i) // 更改文件名为"ep"并填充为4位数
         file, err := os.Create(filePath)
         if err != nil {
             log.Fatal(err)
