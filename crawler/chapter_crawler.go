@@ -44,9 +44,10 @@ func main() {
         var story_id int
         var story_name string
         var chapter_name string // Change "title" to "chapter_name"
+        var status int
         // 添加其他需要的字段
 
-        err := rows.Scan(&id, &site_id, &story_id, &story_name, &chapter_name) // Fix variable names
+        err := rows.Scan(&id, &site_id, &story_id, &story_name, &chapter_name, &status) // Fix variable names
         if err != nil {
             panic(err.Error())
         }
