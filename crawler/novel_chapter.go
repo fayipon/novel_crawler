@@ -11,8 +11,19 @@ func main() {
     // 要抓取的网站URL
     url := "https://sto520.com/book/27711/"
 
-    // 发起HTTP GET请求
-    res, err := http.Get(url)
+    // 创建自定义请求
+    req, err := http.NewRequest("GET", url, nil)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    // 添加与Postman请求相同的头部和Cookie
+    req.Header.Set("User-Agent", "Your User Agent") // 替换成Postman中的User-Agent
+    req.Header.Set("Cookie", "Your-Cookie-Header-Value") // 替换成Postman中的Cookie值
+
+    // 发起HTTP请求
+    client := &http.Client{}
+    res, err := client.Do(req)
     if err != nil {
         log.Fatal(err)
     }
