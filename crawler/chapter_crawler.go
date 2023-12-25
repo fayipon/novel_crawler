@@ -109,7 +109,7 @@ func processStory(db *sql.DB, story Story) {
         mergedText += text + "\n"
     })
 
-    specificPrefix := "85小說網"
+    specificPrefix := " 85小說網"
 
     // 检查 mergedText 是否以特定前缀开始
     if strings.HasPrefix(mergedText, specificPrefix) {
