@@ -22,6 +22,7 @@ func main() {
     req.Header.Set("Accept-Encoding", "gzip, deflate, br")
     req.Header.Set("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8")
     req.Header.Set("Host", "sto520.com")
+    req.Header.Set("Cookie", "__cf_bm=YEtKER0mn7qiQdBXPEBX.MmkCarTbagRi3I0ZbVNtjE-1703471246-1-AWY2Z+ZJY2VbDywXFt10jMiYdff6K/GlXFiXWHOSKBfsTgOnBl1zPL6Xx5x/Pq13FSK1PpnIFZkArHZLDvscgxI=")
 
     // 发起HTTP请求
     client := &http.Client{}
