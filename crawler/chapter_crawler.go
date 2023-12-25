@@ -76,12 +76,6 @@ func main() {
             mergedText += text + "\n" 
         })
 
-        // 移除指定文本
-        textToRemove := "85小說網2013- All Rights Reserved"
-        mergedText = strings.Replace(mergedText, textToRemove, "", -1)
-
-        fmt.Printf("%s\n", mergedText)
-
         // 插入数据到数据库表
         currentTime := time.Now().Format("2006-01-02 15:04:05")
         _, err = db.Exec("INSERT INTO chapter (site_id, story_id, data, create_time) VALUES (?, ?, ?, ?)", site_id, story_id, mergedText, currentTime)
