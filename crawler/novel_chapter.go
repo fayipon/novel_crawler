@@ -7,6 +7,7 @@ import (
     "github.com/PuerkitoBio/goquery"
     "net/http"
     "strconv"
+    "strings"
 )
 
 func main() {
@@ -22,8 +23,8 @@ func main() {
         log.Fatal(err)
     }
 
-    // 循环从1到100
-    for i := 101; i <= 1000; i++ {
+    // 循环从1到5
+    for i := 1; i <= 5; i++ {
         // 构建完整URL
         url := baseURL + strconv.Itoa(i) + ".html"
 
@@ -60,10 +61,10 @@ func main() {
         }
         defer file.Close()
 
-        // 提取文本内容并写入txt文件
+        // 提取文本内容并去掉头尾空白并合并为一行
         doc.Find("p").Each(func(index int, element *goquery.Selection) {
-            text := element.Text()
-            _, err := file.WriteString(text + "\n")
+            text := strings.TrimSpace(element.Text())
+            _, err := file.WriteString(text)
             if err != nil {
                 log.Fatal(err)
             }
