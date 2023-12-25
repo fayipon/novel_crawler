@@ -32,7 +32,7 @@ func main() {
     defer db.Close()
 
     // 执行查询操作
-    rows, err := db.Query("SELECT * FROM story WHERE status = 1")
+    rows, err := db.Query("SELECT * FROM story WHERE status = 1 limit 1")
     if err != nil {
         panic(err.Error())
     }
