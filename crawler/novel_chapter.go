@@ -11,22 +11,8 @@ func main() {
     // 要抓取的网站URL
     url := "https://sto520.com/book/27711/"
 
-    // 创建自定义请求
-    req, err := http.NewRequest("GET", url, nil)
-    if err != nil {
-        log.Fatal(err)
-    }
-
-    // 模拟 Postman 请求头
-    req.Header.Set("User-Agent", "Postman")
-    req.Header.Set("Host", "sto520.com")
-    req.Header.Set("Accept", "*/*")
-    req.Header.Set("Accept-Encoding", "gzip, deflate, br")
-    req.Header.Set("Connection", "keep-alive")
-	
-    // 发起HTTP请求
-    client := &http.Client{}
-    res, err := client.Do(req)
+    // 发起HTTP GET请求
+    res, err := http.Get(url)
     if err != nil {
         log.Fatal(err)
     }
