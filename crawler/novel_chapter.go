@@ -30,7 +30,7 @@ func main() {
     }
 
     // 选择所有带有<p style="color: black;">的元素
-    doc.Find("p[style='color: black;']").Each(func(index int, element *goquery.Selection) {
+    doc.Find("p").Each(func(index int, element *goquery.Selection) {
         // 提取文本内容并打印
         text := element.Text()
         fmt.Println("文本内容:", text)
