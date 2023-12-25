@@ -8,6 +8,7 @@ import (
     "github.com/joho/godotenv"
     "os"
     "time"
+    "strings"
     "github.com/PuerkitoBio/goquery"
 )
 
