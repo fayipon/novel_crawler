@@ -77,7 +77,7 @@ func main() {
 
         // 插入数据到数据库表
         currentTime := time.Now().Format("2006-01-02 15:04:05")
-        _, err = db.Exec("INSERT INTO your_table (site_id, story_id, data, create_time) VALUES (?, ?, ?, ?)", site_id, story_id, mergedText, currentTime)
+        _, err = db.Exec("INSERT INTO chapter (site_id, story_id, data, create_time) VALUES (?, ?, ?, ?)", site_id, story_id, mergedText, currentTime)
         if err != nil {
             log.Fatal(err)
         }
