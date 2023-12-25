@@ -108,18 +108,32 @@ func processStory(db *sql.DB, story Story) {
         mergedText += text + "\n"
     })
 
-    // 插入数据到数据库表
-    currentTime := time.Now().Format("2006-01-02 15:04:05")
-    _, err = db.Exec("INSERT INTO chapter (site_id, story_id, data, create_time) VALUES (?, ?, ?, ?)", story.SiteID, story.StoryID, mergedText, currentTime)
-    if err != nil {
-        log.Fatal(err)
+    specificString := " 85小說網2013- All Rights Reserved  免責聲明: 本站所有文學作品均由自動化程式以非人工方式自動從第三方網頁搜索而成，所有文學作品都可以在第三方網頁上以公開的方式被找到， 本站收錄這些文學作品是為了便於廣大書友交流學習，不代表本站同意這些文學作品的立場和內容。 任何單位或個人認為本站收錄到的第三方網頁內容可能涉嫌侵犯其信息網路傳播權，應該及時向本站提出書面權利通知，並提供身份證明、權屬證明及詳細侵權情況證明。本站在收到上述法律文件後，將會依法儘快斷開相關鏈接內容。 本站尊重並保護所有使用本站用戶的個人隱私權，您註冊的用戶名、電子郵件地址等個人資料，非經您親自許可或根據相關法律、法規的強制性規定，本站不會主動地泄露給第三方。 本站所收錄小說作品、社區話題、小說評論及本站所做之廣告均屬其個人行為，與本站立場無關。 
+    "
+
+    // 检查 mergedText 是否等于特定字符串
+    if mergedText == specificString {
+        // 在 mergedText 等于特定字符串时执行其他分析逻辑
+        fmt.Println("Merged text matches the specific string. Performing additional analysis...")
+
+        // 在此处添加其他分析逻辑
+      
+    } else {
+
+        // 插入数据到数据库表
+        currentTime := time.Now().Format("2006-01-02 15:04:05")
+        _, err = db.Exec("INSERT INTO chapter (site_id, story_id, data, create_time) VALUES (?, ?, ?, ?)", story.SiteID, story.StoryID, mergedText, currentTime)
+        if err != nil {
+            log.Fatal(err)
+        }
+
+        fmt.Printf("Data inserted successfully!\n")
+
+        // 执行 SQL 更新操作
+        _, err = db.Exec("UPDATE story SET status = 2 WHERE site_id = ? AND story_id = ?", story.SiteID, story.StoryID)
+        if err != nil {
+            log.Fatal(err)
+        }
     }
 
-    fmt.Printf("Data inserted successfully!\n")
-
-    // 执行 SQL 更新操作
-    _, err = db.Exec("UPDATE story SET status = 2 WHERE site_id = ? AND story_id = ?", story.SiteID, story.StoryID)
-    if err != nil {
-        log.Fatal(err)
-    }
 }
