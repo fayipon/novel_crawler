@@ -3,10 +3,11 @@ package main
 import (
     "database/sql"
     "fmt"
-    "log" // Import the "log" package
+    "log"
     _ "github.com/go-sql-driver/mysql"
     "github.com/joho/godotenv"
     "os"
+    "github.com/PuerkitoBio/goquery"
 )
 
 func main() {
@@ -54,9 +55,21 @@ func main() {
 
         // 处理查询结果，可以根据需要输出或进行其他操作
         fmt.Printf("ID: %d, story_name: %s, chapter_name: %s\n", id, story_name, chapter_name)
-        
+
         link := fmt.Sprintf("https://www.85novel.com/book/%d/%d.html", site_id, story_id)
         fmt.Printf("URL: %s\n", link)
+
+        // 发送 HTTP 请求获取页面内容
+        doc, err := goquery.NewDocument(link)
+        if err != nil {
+            log.Fatal(err)
+        }
+
+        // 查找所有的 <p></p> 标签并提取文本
+        doc.Find("p").Each(func(index int, element *goquery.Selection) {
+            text := element.Text()
+            fmt.Println(text)
+        })
 
     }
 
