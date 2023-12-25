@@ -75,13 +75,6 @@ func main() {
             mergedText += text + "\n" 
         })
 
-        // 连接数据库
-        db, err := sql.Open("mysql", "username:password@tcp(localhost:3306)/dbname")
-        if err != nil {
-            log.Fatal(err)
-        }
-        defer db.Close()
-
         // 插入数据到数据库表
         currentTime := time.Now().Format("2006-01-02 15:04:05")
         _, err = db.Exec("INSERT INTO your_table (site_id, story_id, data, create_time) VALUES (?, ?, ?, ?)", site_id, story_id, mergedText, currentTime)
