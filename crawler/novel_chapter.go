@@ -36,5 +36,5 @@ func main() {
     // 输出标题
     fmt.Println("标题:", title)
     // 输出标题
-    fmt.Println("res:", res)
+    fmt.Println("doc:", doc)
 }
