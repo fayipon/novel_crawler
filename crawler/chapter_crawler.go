@@ -65,11 +65,30 @@ func main() {
             log.Fatal(err)
         }
 
+        // 创建一个字符串变量来保存抓取到的文本
+        var mergedText string
+
         // 查找所有的 <p></p> 标签并提取文本
         doc.Find("p").Not("p:last-child").Each(func(index int, element *goquery.Selection) {
             text := element.Text()
-            fmt.Println(text)
+            mergedText += text + "\n" 
         })
+
+        // 连接数据库
+        db, err := sql.Open("mysql", "username:password@tcp(localhost:3306)/dbname")
+        if err != nil {
+            log.Fatal(err)
+        }
+        defer db.Close()
+
+        // 插入数据到数据库表
+        currentTime := time.Now().Format("2006-01-02 15:04:05")
+        _, err = db.Exec("INSERT INTO your_table (site_id, story_id, data, create_time) VALUES (?, ?, ?, ?)", siteID, storyID, mergedText, currentTime)
+        if err != nil {
+            log.Fatal(err)
+        }
+        
+        fmt.Println("ID: %d, story_name: %s, chapter_name: %s \n Data inserted successfully!\n", id, story_name, chapter_name)
 
     }
 
