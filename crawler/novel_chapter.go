@@ -61,12 +61,25 @@ func main() {
         }
         defer file.Close()
 
-        // 提取文本内容并去掉头尾空白并合并为一行
+        // 提取文本内容并限制在每行不超过200字
         doc.Find("p").Each(func(index int, element *goquery.Selection) {
             text := strings.TrimSpace(element.Text())
-            _, err := file.WriteString(text)
-            if err != nil {
-                log.Fatal(err)
+
+            // 按照200字分割文本并写入文件
+            for len(text) > 0 {
+                if len(text) > 200 {
+                    _, err := file.WriteString(text[:200] + "\n")
+                    if err != nil {
+                        log.Fatal(err)
+                    }
+                    text = text[200:]
+                } else {
+                    _, err := file.WriteString(text)
+                    if err != nil {
+                        log.Fatal(err)
+                    }
+                    break
+                }
             }
         })
 
