@@ -13,6 +13,15 @@ func main() {
     // 指定基本URL
     baseURL := "https://www.bg3.co/novel/pagea/chaoshenjixieshi-qipeijia_"
 
+    // 指定目录路径
+    dirPath := "./novel"
+
+    // 创建目录（如果不存在）
+    err := os.MkdirAll(dirPath, os.ModePerm)
+    if err != nil {
+        log.Fatal(err)
+    }
+
     // 循环从1到5
     for i := 1; i <= 5; i++ {
         // 构建完整URL
@@ -43,8 +52,8 @@ func main() {
         title := doc.Find("title").Text()
         fmt.Printf("标题 %d: %s\n", i, title)
 
-        // 将页面内容保存为txt文件
-        filePath := fmt.Sprintf("page%d.txt", i)
+        // 创建txt文件并打开以供写入
+        filePath := fmt.Sprintf("%s/ep%d.txt", dirPath, i) // 更改文件名为"ep"
         file, err := os.Create(filePath)
         if err != nil {
             log.Fatal(err)
