@@ -103,6 +103,7 @@ func processStory(db *sql.DB, story Story) {
 
     // 创建一个字符串变量来保存抓取到的文本
     var mergedText string
+    var contentInfoJSON string // 声明 contentInfoJSON 变量
 
     // 查找所有的 <p></p> 标签并提取文本
     doc.Find("p").Each(func(index int, element *goquery.Selection) {
@@ -111,6 +112,7 @@ func processStory(db *sql.DB, story Story) {
     })
 
     specificPrefix := " 85小說網"
+
 
     // 检查 mergedText 是否以特定前缀开始
     if strings.HasPrefix(mergedText, specificPrefix) {
