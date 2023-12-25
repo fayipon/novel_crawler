@@ -119,7 +119,6 @@ func processStory(db *sql.DB, story Story) {
         // 在 mergedText 以特定前缀开始时执行其他处理逻辑
         fmt.Println("Merged text starts with the specific prefix. Performing additional analysis...")
 
-
         // 从 GoQuery 文档中获取包含 JavaScript 代码的 script 标签
         doc.Find("script").Each(func(index int, scriptElement *goquery.Selection) {
             // 获取 script 标签内的文本内容
@@ -137,12 +136,19 @@ func processStory(db *sql.DB, story Story) {
                 contentInfoJSON = match[1]
                 contentInfoJSON = strings.ReplaceAll(contentInfoJSON, " ", "")
                 contentInfoJSON = strings.ReplaceAll(contentInfoJSON, "\n", "")
-    
-                // 反转字符串
-                contentInfoJSONReversed := reverseString(contentInfoJSON)
-    
-                // 分割 JSON 数组中的字符串，并按行打印
-                lines := strings.Split(contentInfoJSONReversed, `","`)
+
+                // 解析 JSON 数组
+                var jsonArray []string
+                jsonArray = append(jsonArray, contentInfoJSON)
+
+                // 倒序排序 JSON 数组
+                sort.Sort(sort.Reverse(sort.StringSlice(jsonArray)))
+
+                // 将排序后的 JSON 数组合并为字符串并按行打印
+                sortedJSON := strings.Join(jsonArray, ",")
+
+                // 打印每行
+                lines := strings.Split(sortedJSON, `","`)
                 for _, line := range lines {
                     // 去掉 JSON 数组中的引号和方括号
                     line = strings.Trim(line, `[]"`)
@@ -170,13 +176,4 @@ func processStory(db *sql.DB, story Story) {
         }
     }
 
-}
-
-// 反转字符串的函数
-func reverseString(s string) string {
-    runes := []rune(s)
-    for i, j := 0, len(runes)-1; i < j; i, j = i+1, j-1 {
-        runes[i], runes[j] = runes[j], runes[i]
-    }
-    return string(runes)
 }
