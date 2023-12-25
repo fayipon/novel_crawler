@@ -53,7 +53,8 @@ func main() {
         }
 
         // 处理查询结果，可以根据需要输出或进行其他操作
-        fmt.Printf("ID: %d, site_id: %d, story_id: %d, story_name: %s, chapter_name: %s\n", id, site_id, story_id, story_name, chapter_name)
+        fmt.Printf("ID: %d, story_name: %s, chapter_name: %s\n", id, story_name, chapter_name)
+        link := fmt.Sprintf("https://www.85novel.com/book/%d/%d.html", site_id, story_id)
     }
 
     // 检查是否有错误发生
