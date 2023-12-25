@@ -6,61 +6,60 @@ import (
     "os"
     "github.com/PuerkitoBio/goquery"
     "net/http"
+    "strconv"
 )
 
 func main() {
-    // 要抓取的网站URL
-    url := "https://www.bg3.co/novel/pagea/chaoshenjixieshi-qipeijia_1.html"
+    // 指定基本URL
+    baseURL := "https://www.bg3.co/novel/pagea/chaoshenjixieshi-qipeijia_"
 
-    // 发起HTTP GET请求
-    res, err := http.Get(url)
-    if err != nil {
-        log.Fatal(err)
-    }
-    defer res.Body.Close()
+    // 循环从1到5
+    for i := 1; i <= 5; i++ {
+        // 构建完整URL
+        url := baseURL + strconv.Itoa(i) + ".html"
 
-    // 检查响应状态码
-    if res.StatusCode != http.StatusOK {
-        log.Fatalf("HTTP request failed with status code: %d", res.StatusCode)
-    }
-
-    // 使用goquery选择器来解析页面元素
-    doc, err := goquery.NewDocumentFromReader(res.Body)
-    if err != nil {
-        log.Fatal(err)
-    }
-
-    // 获取页面标题
-    title := doc.Find("title").Text()
-
-    // 指定目录路径
-    dirPath := "./novel" // 例如，将文件夹保存在当前工作目录下的 "novel" 目录中
-
-    // 创建目录（如果不存在）
-    err = os.MkdirAll(dirPath, os.ModePerm)
-    if err != nil {
-        log.Fatal(err)
-    }
-
-    // 创建txt文件并打开以供写入
-    filePath := fmt.Sprintf("%s/%s.txt", dirPath, title)
-    file, err := os.Create(filePath)
-    if err != nil {
-        log.Fatal(err)
-    }
-    defer file.Close()
-
-    // 选择所有带有<p style="color: black;">的元素
-    doc.Find("p").Each(func(index int, element *goquery.Selection) {
-        // 提取文本内容
-        text := element.Text()
-        
-        // 写入文本内容到txt文件中
-        _, err := file.WriteString(text + "\n")
+        // 发起HTTP GET请求
+        res, err := http.Get(url)
         if err != nil {
             log.Fatal(err)
         }
-    })
+        defer res.Body.Close()
 
-    fmt.Printf("文本已保存到 %s\n", filePath)
+        // 检查响应状态码
+        if res.StatusCode != http.StatusOK {
+            log.Fatalf("HTTP request failed with status code: %d", res.StatusCode)
+        }
+
+        // 使用goquery选择器来解析页面元素
+        doc, err := goquery.NewDocumentFromReader(res.Body)
+        if err != nil {
+            log.Fatal(err)
+        }
+
+        // 选择您希望提取的内容并进行处理
+        // 这里可以根据您的需求提取文本内容并进行处理
+
+        // 示例：获取页面标题并打印
+        title := doc.Find("title").Text()
+        fmt.Printf("标题 %d: %s\n", i, title)
+
+        // 将页面内容保存为txt文件
+        filePath := fmt.Sprintf("page%d.txt", i)
+        file, err := os.Create(filePath)
+        if err != nil {
+            log.Fatal(err)
+        }
+        defer file.Close()
+
+        // 提取文本内容并写入txt文件
+        doc.Find("p").Each(func(index int, element *goquery.Selection) {
+            text := element.Text()
+            _, err := file.WriteString(text + "\n")
+            if err != nil {
+                log.Fatal(err)
+            }
+        })
+
+        fmt.Printf("页面内容已保存到 %s\n", filePath)
+    }
 }
