@@ -131,12 +131,22 @@ func processStory(db *sql.DB, story Story) {
             match := re.FindStringSubmatch(scriptText)
 
             if len(match) == 2 {
-                contentInfoJSON := match[1]
-
-                // 打印 contentInfo 的 JSON 值
-                fmt.Println("contentInfo JSON:", contentInfoJSON)
-
-                // 如果需要对 contentInfoJSON 进行进一步处理，可以在这里添加代码
+                // 去掉 JSON 字符串中的空格和换行符
+                contentInfoJSON = match[1]
+                contentInfoJSON = strings.ReplaceAll(contentInfoJSON, " ", "")
+                contentInfoJSON = strings.ReplaceAll(contentInfoJSON, "\n", "")
+    
+                // 反转字符串
+                contentInfoJSONReversed := reverseString(contentInfoJSON)
+    
+                // 分割 JSON 数组中的字符串，并按行打印
+                lines := strings.Split(contentInfoJSONReversed, `","`)
+                for _, line := range lines {
+                    // 去掉 JSON 数组中的引号和方括号
+                    line = strings.Trim(line, `[]"`)
+                    // 打印每行
+                    fmt.Println(line)
+                }
             }
         })
 
@@ -158,4 +168,13 @@ func processStory(db *sql.DB, story Story) {
         }
     }
 
+}
+
+// 反转字符串的函数
+func reverseString(s string) string {
+    runes := []rune(s)
+    for i, j := 0, len(runes)-1; i < j; i, j = i+1, j-1 {
+        runes[i], runes[j] = runes[j], runes[i]
+    }
+    return string(runes)
 }
