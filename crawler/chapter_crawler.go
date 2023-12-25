@@ -66,7 +66,7 @@ func main() {
         }
 
         // 查找所有的 <p></p> 标签并提取文本
-        doc.Find("p").Each(func(index int, element *goquery.Selection) {
+        doc.Find("p").Not("p a").Each(func(index int, element *goquery.Selection) {
             text := element.Text()
             fmt.Println(text)
         })
