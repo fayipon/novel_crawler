@@ -24,7 +24,7 @@ func main() {
     }
 
     // 循环从1到5
-    for i := 1; i <= 5; i++ {
+    for i := 1; i <= 1470; i++ {
         // 构建完整URL
         url := baseURL + strconv.Itoa(i) + ".html"
 
