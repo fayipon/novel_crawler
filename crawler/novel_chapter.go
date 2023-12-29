@@ -12,10 +12,10 @@ import (
 
 func main() {
     // 指定基本URL
-    baseURL := "https://www.bg3.co/novel/pagea/chuanchengwaishihouwozhixiangzhongtian-chanuan_"
+    baseURL := "https://www.bg3.co/novel/pagea/youxianrensheng_woyouwanmucaoyuan-tanhualuo_"
 
     // 指定目录路径
-    dirPath := "./story2"
+    dirPath := "./story3"
 
     // 创建目录（如果不存在）
     err := os.MkdirAll(dirPath, os.ModePerm)
@@ -24,7 +24,7 @@ func main() {
     }
 
     // 循环从1到5
-    for i := 1; i <= 666; i++ {
+    for i := 1; i <= 408; i++ {
         // 构建完整URL
         url := baseURL + strconv.Itoa(i) + ".html"
 
