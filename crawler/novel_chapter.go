@@ -12,10 +12,10 @@ import (
 
 func main() {
     // 指定基本URL
-    baseURL := "https://www.bg3.co/novel/pagea/chaoshenjixieshi-qipeijia_"
+    baseURL := "https://www.bg3.co/novel/pagea/chuanchengwaishihouwozhixiangzhongtian-chanuan_"
 
     // 指定目录路径
-    dirPath := "./novel"
+    dirPath := "./story2"
 
     // 创建目录（如果不存在）
     err := os.MkdirAll(dirPath, os.ModePerm)
